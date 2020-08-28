@@ -1,0 +1,106 @@
+Depois do Hello Word, 
+
+1) Seguir este tutorial https://github.com/rfukui/do-excel-ao-sistema-complexo/tree/master/03-usando-mvc
+
+Até docker-compose up db 
+( o que tem abaixo pe para mudar o nome do banco de dados)
+
+2 ) depois voltar para https://github.com/rfukui/do-excel-ao-sistema-complexo/tree/master/01-banco-relacional
+e retomar abrindo um novo terminal:
+
+Abra outra janela no terminal e insira o comando
+
+# apt install postgresql-client
+
+ psql -h 127.0.0.1 -U postgres ( aqui ele pede uma senha para o postgres, usar example)
+
+Após criar os databases, conferir usando o \l, e para sair usar \q 2x, para retornar a linha do terminal.
+
+3) Retornar para o tutorial https://github.com/rfukui/do-excel-ao-sistema-complexo/tree/master/03-usando-mvc
+
+Vídeos de Apoio:
+https://www.youtube.com/watch?v=JCloD5-QTns
+
+https://www.youtube.com/watch?v=i0gY3HePe-k&t=8s
+
+Rodar o seguinte comando:
+npx sequelize-cli model:create --name Products --attributes name:string,price:decimal
+
+Após rodar esse comando, repare que será criado o prodcts.js e a pasta migrations.
+No arquivo procducts.js, inserir na linha onde tem price: DataTypes.DECIMAL, 10,2, ficando assim a linha: price: DataTypes.DECIMAL(10,2)
+
+Após alterar o package.jason
+"scripts": {
+  "migrate": "npx sequelize-cli db:migrate", somente essa linha 
+
+Após alterar docker-compose.yml:
+Somente no dev:
+		command:  sh -c "npm run migrate && npm run dev" 
+
+Após alterar no config.js todos os "password", de null para "example"
+
+Após retornar no products.js e adicionar has_extra: DataTypes.BOOLEAN, 
+    is_burger: DataTypes. BOOLEAN, abaixo do price, logo a estrutura final ficará:
+
+		'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const Products = sequelize.define('Products', {
+    name: DataTypes.STRING,
+    price: DataTypes.DECIMAL(10,2),
+    has_extra: DataTypes.BOOLEAN, 
+    is_burger: DataTypes. BOOLEAN
+  }, {});
+  Products.associate = function(models) {
+    // associations can be defined here
+  };
+  return Products;
+};
+
+
+Após ir na pasta migrations, no arquivão e abaixo do campo price: inserir os seguintes campos:
+	has_extra: {
+        type: Sequelize.BOOLEAN
+      },
+      is_burger: {
+        type: Sequelize.BOOLEAN
+      },
+
+Voltar no terminal e inserir o seguinte comando:
+npx sequelize-cli model:create --name Order --attributes is_active:boolean,table:integer,client:string,waiter:string
+
+Obs: Verificar se os atributos acima fazem sentido para o seu projeto atual.
+
+Aguarar ele criar o New Model e New Migration.
+
+
+Continuar a leitura a aprtir do seguinte trecho após o test: db
+
+"Foi criado neste momento um script que toda vez que você iniciar seu container a primeira coisa que ele irá fazer é executar a migração, com isso não precisaremos nos preocupar em executar de forma individual, basta baixar e subir o contaier. um processo que costuma ser bem rápido."
+
+https://github.com/rfukui/do-excel-ao-sistema-complexo/tree/master/03-usando-mvc
+
+Até Criando nossos serviços controladores e rotas.
+
+Obs: fazer um novo sudo docker-compose down ( para eles pararem o que estão fazendo) e sudo docker-compose up para ver se não dá erro, testar também o sudo docker-compose up dev
+
+4) Lição de casa rodar o npx squalize cli, conforme passo 3, usar a foto enviada por Jéssica Melise de referência.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
